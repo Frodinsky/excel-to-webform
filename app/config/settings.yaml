@@ -15,17 +15,42 @@ selenium:
   maximizar: true
   url_formulario: "https://demoqa.com/text-box"
 
-# Formularios disponibles
-formulario:
-  activo: contacto      # nombre clave del formulario activo
-  plantillas:
-    contacto: ./config/schema_contacto.yaml
-    registro: ./config/schema_registro.yaml
+# Configuración de Validación
+validacion:
+  archivo_excel: "datos.xlsx"
+  campos:
+    nombre:
+      tipo: str
+      obligatorio: true
+    email:
+      tipo: str
+      obligatorio: true
+      regex: '^\S+@\S+\.\S+$'
+    dir0:
+      tipo: str
+      obligatorio: true
+    dir1:
+      tipo: str
+      obligatorio: true
 
-# Archivos por defecto
-archivos:
-  datos_entrada: ./data/datos.xlsx
-  reporte_salida: ./reportes/reporte_validacion.xlsx
+    #fecha_nac:
+    #  tipo: date
+    #  obligatorio: false
+    #edad:
+    #  tipo: int
+    #  obligatorio: true
+    #  min: 18
+    #genero:
+    #  tipo: str
+    #  obligatorio: true
+    # valores: ['M', 'F']
+
+reporte_errores:
+  color_error_total: "FFCCCC"
+  color_error_campo: "FFA500"
+  nombre_columna_errores: "Errores"
+  ruta_salida: "reporte_errores.xlsx"
+
 
 # UI
 interfaz:
