@@ -1,6 +1,6 @@
 import os
 from validator import ValidadorExcel
-from multi_error_sheets import ReporteErroresMultiplesHojas
+from app.reports.multi_error_sheets import ReporteErroresMultiplesHojas
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_PATH = os.path.join(BASE_DIR, "config/settings.yaml")
