@@ -58,6 +58,7 @@ class ReporteErroresExcel:
         # Cargar con openpyxl para resaltar celdas
         wb = load_workbook(ruta_salida)
         ws = wb.active
+        ws.freeze_panes = "A2"
 
         columnas_dict = {
             col: idx + 1
