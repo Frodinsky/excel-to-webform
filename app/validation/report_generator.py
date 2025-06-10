@@ -47,27 +47,37 @@ class ReporteErroresExcel:
                     if nombre_col.lower() in error_msg.lower():
                         ws.cell(row=fila, column=idx).fill = fill_campo
 
-    def exportar(self, ruta_salida=None):
-        """Crea archivo Excel con errores resaltados."""
+    def exportar(self, ruta_salida=None, writer=None, nombre_hoja=None):
         if ruta_salida is None:
             ruta_salida = self.ruta_salida
 
         df_con_errores = self.aplicar_errores()
-        df_con_errores.to_excel(ruta_salida, index=False)
 
-        # Cargar con openpyxl para resaltar celdas
-        wb = load_workbook(ruta_salida)
-        ws = wb.active
-        ws.freeze_panes = "A2"
+        if writer is None:
+            # Guardar en archivo independiente
+            df_con_errores.to_excel(ruta_salida, index=False)
+            wb = load_workbook(ruta_salida)
+            ws = wb.active
+            ws.freeze_panes = "A2"
+        else:
+            # Guardar en hoja del archivo abierto con ExcelWriter
+            if nombre_hoja is None:
+                nombre_hoja = "Hoja1"
+            df_con_errores.to_excel(writer, index=False, sheet_name=nombre_hoja)
+            wb = writer.book
+            ws = wb[nombre_hoja]
+            ws.freeze_panes = "A2"
 
-        columnas_dict = {
-            col: idx + 1
-            for idx, col in enumerate(df_con_errores.columns)
-        }
+        columnas_dict = {col: idx + 1 for idx, col in enumerate(df_con_errores.columns)}
         col_errores = columnas_dict.get(self.nombre_columna_errores)
 
         if col_errores:
             self._resaltar_errores(ws, columnas_dict, col_errores)
 
-        wb.save(ruta_salida)
-        print(f"🔴 Reporte generado con errores resaltados: {ruta_salida}")
+        if writer is None:
+            wb.save(ruta_salida)
+            print(f"🔴 Reporte generado con errores resaltados: {ruta_salida}")
+        else:
+            # No guardamos porque lo hace la clase que abrió el writer
+            print(f"🔴 Hoja '{nombre_hoja}' generada con errores resaltados.")
+
