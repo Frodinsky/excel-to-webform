@@ -6,11 +6,11 @@ import yaml
 import os
 
 class FileUploadSection:
-    def __init__(self, page: ft.Page):
+    def __init__(self, page: ft.Page, on_validate_file):
         self.page = page
         self.theme = page.theme_mode
         self.selected_file_text = ft.Text("Ningún archivo seleccionado", color=ft.Colors.WHITE70, size=16)
-
+        self.on_validate_file = on_validate_file
         self.file_picker = ft.FilePicker(on_result=self.on_file_selected)
         self.page.overlay.append(self.file_picker)
 
@@ -138,33 +138,5 @@ class FileUploadSection:
             self.page.update()
             return
 
-        # ✅ Ruta absoluta al settings.yaml
-        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        config_path = os.path.join(BASE_DIR, "config/settings.yaml")
-
-        # ✅ Cargar configuración y actualizar path del Excel
-        with open(config_path, "r", encoding="utf-8") as f:
-            config = yaml.safe_load(f)
-
-        config["validacion"]["archivo_excel"] = self.selected_file_path
-
-        # ✅ Guardar cambios en el mismo settings.yaml
-        with open(config_path, "w", encoding="utf-8") as f:
-            yaml.dump(config, f, allow_unicode=True)
-
-        # ✅ Ejecutar validación
-        validador = ValidadorExcel(config_path=config_path, excel_path=self.selected_file_path)
-        reporte_por_hoja = validador.validar()
-
-        if not reporte_por_hoja:
-            self.selected_file_text.value = "✅ Archivo válido"
-            self.selected_file_text.color = "green"
-        else:
-            self.selected_file_text.value = "❌ Archivo con errores"
-            self.selected_file_text.color = "red"
-            # ✅ Pasar también config_path al reporte
-            reporte = ReporteErroresMultiplesHojas(reporte_por_hoja, ruta_config=config_path)
-            reporte.exportar()
-
-        self.page.update()
+        self.on_validate_file(self.selected_file_path)
 
