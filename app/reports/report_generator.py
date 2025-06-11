@@ -15,7 +15,7 @@ class ReporteErroresExcel:
         with open(ruta_config, "r", encoding="utf-8") as file:
             config = yaml.safe_load(file)
 
-        conf_reporte = config.get("reporte_errores", {})
+        conf_reporte = config.get("reporte_errores")
 
         self.df = df_original.copy()
         self.errores = errores

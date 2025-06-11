@@ -45,7 +45,7 @@ class FileUploadSection:
                     padding=10,
                 )
             ]),
-            width=self.page.width * 0.33,  # ✅ Aproximadamente 33% del ancho
+            width=self.page.width * 0.53,  # ✅ Aproximadamente 33% del ancho
             height=200,  # ✅ Un poco más alto
             border=ft.border.all(2, ft.Colors.WHITE24),
             border_radius=10,
