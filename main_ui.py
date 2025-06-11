@@ -1,5 +1,6 @@
 import flet as ft
 from app.ui.files_ui import FileUploadSection
+from app.ui.archivo_validador_handler import ArchivoValidadorHandler
 
 class FormValidatorApp:
     def __init__(self, page: ft.Page):
@@ -9,6 +10,9 @@ class FormValidatorApp:
         self.page.theme_mode = self.theme_mode
         self.page.bgcolor = "#1e1e1e"
         self.page.padding = 20
+
+        self.validador_handler = None  # ✅ Declarado aquí
+        self.file_upload_section = None  # ✅ Declarado aquí
 
         self.build_ui()
 
@@ -43,14 +47,18 @@ class FormValidatorApp:
             padding=20,
             alignment=ft.alignment.center
         )
-
         # Aquí agregamos el componente modularizado
-        file_upload_section = FileUploadSection(self.page).render()
+        self.validador_handler = ArchivoValidadorHandler(self.page)
+        self.file_upload_section = FileUploadSection(
+            page=self.page,
+            on_validate_file=self.validador_handler.validate_file
+        )
 
         self.page.add(
             theme_toggle_container,
             title_section_container,
-            ft.Row([file_upload_section], alignment=ft.MainAxisAlignment.CENTER)
+            ft.Row([self.file_upload_section.render()], alignment=ft.MainAxisAlignment.CENTER),
+            ft.Row([self.validador_handler.get_control()], alignment=ft.MainAxisAlignment.CENTER),
         )
 
     def toggle_theme(self, e):
