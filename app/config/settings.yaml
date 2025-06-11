@@ -2,7 +2,7 @@
 app:
   nombre: Form Auto Filler # cambiar el nombre despues
   idioma: es
-  autor: TuNombre
+  autor: R
   version: 1.0.0
   output_dir: ./reportes
   logs_dir: ./logs
