@@ -1,5 +1,5 @@
 import flet as ft
-from files_ui import FileUploadSection
+from app.ui.files_ui import FileUploadSection
 
 class FormValidatorApp:
     def __init__(self, page: ft.Page):
