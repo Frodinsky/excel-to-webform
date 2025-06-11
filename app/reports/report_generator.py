@@ -1,16 +1,21 @@
 import yaml
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
+import os
 
 
 class ReporteErroresExcel:
-    def __init__(self, df_original, errores, ruta_config="settings.yaml"):
-        # Cargar configuración desde YAML
+    def __init__(self, df_original, errores, ruta_config=None):
 
-        with open(ruta_config, "r") as file:
+        # Cargar configuración desde YAML
+        if ruta_config is None:
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            ruta_config = os.path.join(base_dir, "config/settings.yaml")
+
+        with open(ruta_config, "r", encoding="utf-8") as file:
             config = yaml.safe_load(file)
 
-        conf_reporte = config.get("reporte_errores")
+        conf_reporte = config.get("reporte_errores", {})
 
         self.df = df_original.copy()
         self.errores = errores

@@ -1,8 +1,12 @@
 import pandas as pd
-from report_generator import ReporteErroresExcel
+from app.reports.report_generator import ReporteErroresExcel
+import os
 
 class ReporteErroresMultiplesHojas:
-    def __init__(self, reporte_por_hoja, ruta_config="settings.yaml", ruta_salida="errores_completo.xlsx"):
+    def __init__(self, reporte_por_hoja, ruta_config=None, ruta_salida="errores_completo.xlsx"):
+        if ruta_config is None:
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            ruta_config = os.path.join(base_dir, "config/settings.yaml")
 
         self.reporte_por_hoja = reporte_por_hoja
         self.ruta_config = ruta_config

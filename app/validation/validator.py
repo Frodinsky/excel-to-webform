@@ -1,12 +1,12 @@
 import pandas as pd
 import yaml
-from  row_validator import validar_fila
+from  app.validation.row_validator import validar_fila
 
 class ValidadorExcel:
-    def __init__(self, config_path):
+    def __init__(self, config_path, excel_path):
         self.config = self._cargar_configuracion(config_path)
         self.reglas = self.config["validacion"]["campos"]
-        self.excel_path = self.config["validacion"]["archivo_excel"]
+        self.excel_path = excel_path
         # Si el usuario no especifica las hojas, detectarlas automáticamente
         self.hojas = self.config["validacion"].get("hojas")
         if not self.hojas:
