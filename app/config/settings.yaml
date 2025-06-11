@@ -1,38 +1,51 @@
+# Nombre y configuración general de la aplicaciónMore actions
 app:
-  autor: TuNombre
+  nombre: Form Auto Filler # cambiar el nombre despues
   idioma: es
-  logs_dir: ./logs
-  nombre: Form Auto Filler
-  output_dir: ./reportes
+  autor: TuNombre
   version: 1.0.0
-interfaz:
-  alto_ventana: 600
-  ancho_ventana: 800
-  tema: claro
-reporte_errores:
-  color_error_campo: FFA500
-  color_error_total: FFCCCC
-  nombre_columna_errores: Errores
-  ruta_salida: reporte_errores.xlsx
+  output_dir: ./reportes
+  logs_dir: ./logs
+
+# Configuración de Selenium
 selenium:
-  headless: false
-  maximizar: true
   navegador: chrome
-  timeout: 10
-  url_formulario: https://demoqa.com/text-box
+  headless: false       # true = sin ventana visible
+  timeout: 10           # segundos de espera para elementos
+  maximizar: true
+  url_formulario: "https://demoqa.com/text-box"
+
+# Configuración de Validación
 validacion:
-  archivo_excel: /home/frodinsky/PycharmProjects/Selenium-con-Python-Test-Qa-Automation/Manejar_Excel/datos.xlsx
   campos:
-    dir0:
-      obligatorio: true
-      tipo: str
-    dir1:
-      obligatorio: true
-      tipo: str
-    email:
-      obligatorio: true
-      regex: ^\S+@\S+\.\S+$
-      tipo: str
     nombre:
-      obligatorio: true
       tipo: str
+      obligatorio: true
+    email:
+      tipo: str
+      obligatorio: true
+      regex: '^\S+@\S+\.\S+$'
+    dir0:
+      tipo: str
+      obligatorio: true
+    dir1:
+      tipo: str
+      obligatorio: true
+
+    #fecha_nac:
+    #  tipo: date
+    #  obligatorio: false
+    #edad:
+    #  tipo: int
+    #  obligatorio: true
+    #  min: 18
+    #genero:
+    #  tipo: str
+    #  obligatorio: true
+    # valores: ['M', 'F']
+
+reporte_errores:
+  color_error_total: "FFCCCC"
+  color_error_campo: "FFA500"
+  nombre_columna_errores: "Errores"
+  ruta_salida: "reporte_errores.xlsx"
