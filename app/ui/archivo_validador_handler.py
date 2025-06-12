@@ -11,7 +11,7 @@ class ArchivoValidadorHandler:
         self.result_text = ft.Text(visible=False, size=16)
         self.container = ft.Container(
             content=self.result_text,
-            padding=10,
+            padding=ft.padding.only(top=20),
             bgcolor=ft.Colors.with_opacity(0.07, ft.Colors.RED_200),
             border_radius=10,
             visible=False,
@@ -25,14 +25,11 @@ class ArchivoValidadorHandler:
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         config_path = os.path.join(BASE_DIR, "config/settings.yaml")
 
-        # Actualizar configuración
+        # Leer la configuración (sin modificarla)
         with open(config_path, "r", encoding="utf-8") as f:
             config = yaml.safe_load(f)
-        config["validacion"]["archivo_excel"] = file_path
-        with open(config_path, "w", encoding="utf-8") as f:
-            yaml.dump(config, f, allow_unicode=True)
 
-        # Validar
+        # Validar (sin tocar el YAML)
         validador = ValidadorExcel(config_path=config_path, excel_path=file_path)
         errores = validador.validar()
 
@@ -43,7 +40,7 @@ class ArchivoValidadorHandler:
         else:
             reporte = ReporteErroresMultiplesHojas(errores, ruta_config=config_path)
             ruta_reporte = reporte.exportar()
-            self.result_text.value = f"❌ Se encontraron errores.\n📄 Reporte: {ruta_reporte}"
+            self.result_text.value = f"❌ Se creo un archivo {ruta_reporte}"
             self.result_text.color = "red"
             self.container.bgcolor = ft.Colors.with_opacity(0.07, ft.Colors.RED_200)
 
