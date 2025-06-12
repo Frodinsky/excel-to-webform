@@ -1,4 +1,4 @@
-from login_page import LoginPage
+from app.automation.login_page import LoginPage
 import yaml
 import os
 import time
