@@ -4,22 +4,25 @@ import flet as ft
 from app.validation.validator import ValidadorExcel
 from app.reports.multi_error_sheets import ReporteErroresMultiplesHojas
 from app.automation.form_filler import FormFiller
+from app.ui.progress_bar_handler import ProgressBarHandler
 
 class ArchivoValidadorHandler:
     def __init__(self, page: ft.Page):
         self.page = page
         self.result_text = ft.Text(visible=False, size=16)
         self.file_path = None
+        self.progress_bar_handler = ProgressBarHandler(page)
         self.automation_button = ft.ElevatedButton(
             text="Llenar Formulario",
             visible=False,
-            on_click=self.ejecutar_llenado
+            on_click = lambda e: self.iniciar_llenado_async()
         )
         self.container = ft.Container(
             content=ft.Column(
                 controls=[
                     self.result_text,
-                    self.automation_button
+                    self.automation_button,
+                    self.progress_bar_handler.get_control(),
                 ],
                 spacing=10,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER
@@ -31,7 +34,10 @@ class ArchivoValidadorHandler:
         )
 
     def get_control(self):
-        return self.container
+        return ft.Column([
+            self.container,  # tu actual UI con resultado y botón
+            self.progress_bar_handler.get_control()
+        ])
 
     def validate_file(self, file_path: str):
         self.file_path = file_path
@@ -75,3 +81,12 @@ class ArchivoValidadorHandler:
                 self.page.snack_bar = ft.SnackBar(ft.Text(f"❌ Error al llenar formulario: {str(ex)}"))
             self.page.snack_bar.open = True
             self.page.update()
+
+    def iniciar_llenado_async(self):
+        self.page.run_task(self._run_llenado_async)
+
+    async def _run_llenado_async(self):
+        await self.progress_bar_handler.ejecutar_llenado_async(self.file_path)
+
+
+
