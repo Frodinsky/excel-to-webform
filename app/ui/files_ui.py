@@ -41,7 +41,7 @@ class FileUploadSection:
                     padding=10,
                 )
             ]),
-            width=self.page.width * 0.53,  # ✅ Aproximadamente 33% del ancho
+            width=self.page.width * 0.66,  # ✅ Aproximadamente 33% del ancho
             height=200,  # ✅ Un poco más alto
             border=ft.border.all(2, ft.Colors.WHITE24),
             border_radius=10,
@@ -58,7 +58,7 @@ class FileUploadSection:
             bgcolor="#3c3c3c",
             color="white",
             on_click=self.validate_file,
-            disabled=True,  # ✅ Inicia desactivado
+            visible=False,
         )
 
         return ft.Container(
@@ -116,7 +116,7 @@ class FileUploadSection:
             self.selected_file_text.value = f"{file_name} ✅"
             self.selected_file_text.color = "green"
             self.selected_file_path = e.files[0].path  # ✅ Guardar path real
-            self.validate_button.disabled = False  # ✅ Activar botón
+            self.validate_button.visible = True  # ✅ Activar botón
         else:
             self.selected_file_text.value = "Ningún archivo seleccionado"
             self.selected_file_text.color = ft.Colors.WHITE70
@@ -128,11 +128,6 @@ class FileUploadSection:
         self.page.update()
 
     def validate_file(self, e):
-        if not self.selected_file_path:
-            self.selected_file_text.value = "⚠️ Primero selecciona un archivo."
-            self.selected_file_text.color = "orange"
-            self.page.update()
-            return
-
         self.on_validate_file(self.selected_file_path)
+
 
