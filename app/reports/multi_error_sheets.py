@@ -23,4 +23,4 @@ class ReporteErroresMultiplesHojas:
                 reporte = ReporteErroresExcel(df, errores, ruta_config=self.ruta_config)
                 reporte.exportar(writer=writer, nombre_hoja=nombre_hoja)
 
-        print(f"📘 Reporte consolidado generado: {self.ruta_salida}")
+        return self.ruta_salida

@@ -86,3 +86,5 @@ class ReporteErroresExcel:
             # No guardamos porque lo hace la clase que abrió el writer
             print(f"🔴 Hoja '{nombre_hoja}' generada con errores resaltados.")
 
+        return ruta_salida
+
