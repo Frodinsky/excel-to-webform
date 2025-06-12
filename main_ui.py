@@ -9,7 +9,7 @@ class FormValidatorApp:
         self.page.title = "FormValidator"
         self.page.theme_mode = self.theme_mode
         self.page.bgcolor = "#1e1e1e"
-        self.page.padding = 20
+        self.page.padding = 50
 
         self.validador_handler = None  # ✅ Declarado aquí
         self.file_upload_section = None  # ✅ Declarado aquí
@@ -17,21 +17,6 @@ class FormValidatorApp:
         self.build_ui()
 
     def build_ui(self):
-        theme_toggle_container = ft.Container(
-            content=ft.Row(
-                controls=[
-                    ft.IconButton(
-                        icon=ft.Icons.BRIGHTNESS_6_OUTLINED,
-                        tooltip="Cambiar tema",
-                        on_click=self.toggle_theme,
-                        icon_color="white"
-                    )
-                ],
-                alignment=ft.MainAxisAlignment.END
-            ),
-            alignment=ft.alignment.top_right
-        )
-
         title_section_container = ft.Container(
             content=ft.Column([
                 ft.Text(
@@ -44,8 +29,9 @@ class FormValidatorApp:
                 ft.Divider(color="white24", thickness=1)
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-            padding=20,
-            alignment=ft.alignment.center
+            padding=ft.padding.only(top=100),
+            alignment=ft.alignment.center,
+
         )
         # Aquí agregamos el componente modularizado
         self.validador_handler = ArchivoValidadorHandler(self.page)
@@ -55,19 +41,11 @@ class FormValidatorApp:
         )
 
         self.page.add(
-            theme_toggle_container,
             title_section_container,
             ft.Row([self.file_upload_section.render()], alignment=ft.MainAxisAlignment.CENTER),
             ft.Row([self.validador_handler.get_control()], alignment=ft.MainAxisAlignment.CENTER),
         )
 
-    def toggle_theme(self, e):
-        self.theme_mode = (
-            ft.ThemeMode.LIGHT if self.theme_mode == ft.ThemeMode.DARK else ft.ThemeMode.DARK
-        )
-        self.page.theme_mode = self.theme_mode
-        self.page.bgcolor = "#ffffff" if self.theme_mode == ft.ThemeMode.LIGHT else "#1e1e1e"
-        self.page.update()
 
 def main(page: ft.Page):
     FormValidatorApp(page)
