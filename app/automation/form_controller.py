@@ -1,7 +1,6 @@
 from app.automation.login_page import LoginPage
 import yaml
 import os
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -27,15 +26,14 @@ class FormularioController:
             driver.maximize_window()
         return driver
 
-    def ejecutar(self, datos_formulario: dict):
-        try:
-            self.driver.get(self.config["selenium"]["url_formulario"])
-            login_page = LoginPage(self.driver, timeout=self.config["selenium"]["timeout"])
-            login_page.ingresar_usuario(datos_formulario.get("nombre"))
-            login_page.ingresar_email(datos_formulario.get("email"))
-            login_page.ingresar_direccion1(datos_formulario.get("direccion1"))
-            login_page.ingresar_direccion2(datos_formulario.get("direccion2"))
-            login_page.hacer_login()
-            time.sleep(2)
-        finally:
-            self.driver.quit()
+    def llenar_formulario(self, datos_formulario: dict):
+        self.driver.get(self.config["selenium"]["url_formulario"])
+        login_page = LoginPage(self.driver, timeout=self.config["selenium"]["timeout"])
+        login_page.ingresar_usuario(datos_formulario.get("nombre"))
+        login_page.ingresar_email(datos_formulario.get("email"))
+        login_page.ingresar_direccion1(datos_formulario.get("dir0"))
+        login_page.ingresar_direccion2(datos_formulario.get("dir1"))
+        login_page.hacer_login()
+
+    def cerrar(self):
+        self.driver.quit()
