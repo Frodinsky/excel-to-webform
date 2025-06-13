@@ -47,7 +47,6 @@ class FormValidatorApp:
         )
 
 
-def main(page: ft.Page):
+def start_ui(page: ft.Page):
     FormValidatorApp(page)
 
-ft.app(target=main)
