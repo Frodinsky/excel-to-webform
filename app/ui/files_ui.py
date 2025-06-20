@@ -120,6 +120,7 @@ class FileUploadSection:
         else:
             self.selected_file_text.value = "Ningún archivo seleccionado"
             self.selected_file_text.color = ft.Colors.WHITE70
+            self.validate_button.visible = False
 
         self.page.update()
 
