@@ -16,6 +16,10 @@ class FormValidatorApp:
 
         self.build_ui()
 
+    def ocultar_boton_validar(self):
+        self.file_upload_section.validate_button.visible = False
+        self.page.update()
+
     def build_ui(self):
         title_section_container = ft.Container(
             content=ft.Column([
@@ -34,7 +38,10 @@ class FormValidatorApp:
 
         )
         # Aquí agregamos el componente modularizado
-        self.validador_handler = ArchivoValidadorHandler(self.page)
+        self.validador_handler = ArchivoValidadorHandler(
+            page=self.page,
+            on_valid=self.ocultar_boton_validar  # 👈 Aquí conectas el paso 3
+        )
         self.file_upload_section = FileUploadSection(
             page=self.page,
             on_validate_file=self.validador_handler.validate_file

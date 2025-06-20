@@ -7,10 +7,11 @@ from app.automation.form_filler import FormFiller
 from app.ui.progress_bar_handler import ProgressBarHandler
 
 class ArchivoValidadorHandler:
-    def __init__(self, page: ft.Page):
+    def __init__(self, page: ft.Page,  on_valid=None):
         self.page = page
         self.result_text = ft.Text(visible=False, size=16)
         self.file_path = None
+        self.on_valid = on_valid  # 👈 callback
         self.progress_bar_handler = ProgressBarHandler(page)
         self.automation_button = ft.ElevatedButton(
             text="Llenar Formulario",
@@ -58,6 +59,8 @@ class ArchivoValidadorHandler:
             self.result_text.color = "green"
             self.container.bgcolor = ft.Colors.with_opacity(0.05, ft.Colors.GREEN_200)
             self.automation_button.visible = True
+            if self.on_valid:
+                self.on_valid()
         else:
             reporte = ReporteErroresMultiplesHojas(errores, ruta_config=config_path)
             ruta_reporte = reporte.exportar()
